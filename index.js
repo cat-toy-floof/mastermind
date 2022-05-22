@@ -16,22 +16,27 @@ function codemaker() {
 
 let secretCode = codemaker()
 console.log(secretCode)
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
+const readline = require('readline-sync');
 
-readline.question(`What's your guess?`, guess => {
+function guessAndCheck() {
+  let blackpegs = 0
+  let guess = readline.question(`What's your guess?`);
+
   console.log(`Your guess is ${guess}!`)
-  readline.close()
+  //splits on spaces, guesses should look like:2 0 2 0.
   guess = guess.split(" ").map(num => {
     return parseInt(num)
   })
-  let blackpegs=0
+
   for (let i = 0; i < 4; i += 1) {
-    if(guess[i] == secretCode[i]) {
+    if (guess[i] == secretCode[i]) {
       blackpegs += 1
     }
   }
-  console.log(`${blackpegs} black pegs`)
-})
+  console.log(`${blackpegs} black peg(s)`)
+
+  return blackpegs === 4;
+}
+
+while(!guessAndCheck()) {}
+console.log("you win!");
